@@ -17,7 +17,7 @@ function ensuredeps() {
 	if [[ $(which pip2) == '' ]]; then
 		echo "You need pip2 to run this script"
 		echo "wget https://bootstrap.pypa.io/pip/2.7/get-pip.py"
-		echo "python get-pip.py"
+		echo "python2.7 get-pip.py"
 		let EXC++
 	fi
 	if [[ ! -f rpcdump.py ]]; then
