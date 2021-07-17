@@ -18,18 +18,18 @@ function ensuredeps() {
 		echo "You need pip2 to run this script"
 		echo "wget https://bootstrap.pypa.io/pip/2.7/get-pip.py"
 		echo "python get-pip.py"
-        let EXC++
+		let EXC++
 	fi
 	if [[ ! -f rpcdump.py ]]; then
 		echo "Downloading rpcdump.py"
 		wget --quiet https://raw.githubusercontent.com/SecureAuthCorp/impacket/master/examples/rpcdump.py
 		chmod 744 rpcdump.py
-        let EXC++
+		let EXC++
 	fi
 	if [[ $(python -c "import impacket" 2>/dev/null) -ne 0 ]]; then
 		echo "Installing impacket module"
 		pip2 install impacket
-        let EXC++
+		let EXC++
 	fi
 
 	[[ $EXC -eq 0 ]] || exit
