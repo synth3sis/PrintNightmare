@@ -9,7 +9,7 @@ function ensuredeps() {
 		echo "apt install nmap"
 		let EXC++
 	fi
-	if [[ $(which python) == '' ]]; then
+	if [[ $(which python2.7) == '' || $(which python) == '' ]]; then
 		echo "You need python2.7 to run this script"
 		echo "apt install python2.7"
 		let EXC++
@@ -37,8 +37,9 @@ function ensuredeps() {
 
 function nightmarecheck() {
 	IP=$1
+	pythonpkg=$2
 	echo -ne "\r> Testing $IP"
-	res=$(timeout 2 python rpcdump.py @${IP} |grep 'MS-RPRN')
+	res=$(timeout 2 $pythonpkg rpcdump.py @${IP} |grep 'MS-RPRN')
 	if [[ $res != '' ]]; then
 		echo -ne "\r[+] $IP is potentially vulnerable"
 		echo ""
@@ -56,6 +57,17 @@ function help() {
 TARGET=$1
 ensuredeps
 
+if [[ $(which python) != '' ]]; then
+	if [[ $(python --version |grep '2.7') != '' ]]; then
+		pythonpkg=python
+	elif [[ $(python2.7 --version |grep '2.7') != '' ]]; then
+		pythonpkg=python2.7
+	else
+		echo "There where problems with python2"
+		exit
+	fi
+fi
+
 octal='(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[0-9]{1,2})'
 if [[ $TARGET =~ ^$octal\.$octal\.$octal\.$octal$ ]]; then
 	IPLIST=$TARGET
@@ -66,7 +78,7 @@ else
 fi
 
 for ip in $IPLIST; do
-	nightmarecheck $ip
+	nightmarecheck $ip $pythonpkg
 done
 
 echo ""
