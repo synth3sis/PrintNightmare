@@ -6,14 +6,14 @@ This repo is inteded to help sysadmins to find and mitigate the vulnerability kn
 
 <br>
 
-### PrintNightmareCheck
+## PrintNightmareCheck
 
 This bash module has the purose to check hosts vulnerable state to CVE-2021-34527.
 It has some dependencies. Just run it and the dependencies will be verified.
 
 <br>
 
-### No-Nightmare.ps1
+## No-Nightmare.ps1
 
 This powershell module has the purpose to mitigate the CVE-2021-34527 vulnerability; it's not a patch but just a workaround.
 
