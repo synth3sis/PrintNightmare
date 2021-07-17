@@ -1,0 +1,77 @@
+#!/bin/bash
+
+
+function ensuredeps() {
+	EXC=0
+
+	if [[ $(which nmap) == '' ]]; then
+		echo "You need nmap to run this script"
+		echo "apt install nmap"
+		let EXC++
+	fi
+	if [[ $(which python) == '' ]]; then
+		echo "You need python2.7 to run this script"
+		echo "apt install python2.7"
+		let EXC++
+	fi
+	if [[ $(which pip2) == '' ]]; then
+		echo "You need pip2 to run this script"
+		echo "wget https://bootstrap.pypa.io/pip/2.7/get-pip.py"
+		echo "python get-pip.py"
+        let EXC++
+	fi
+	if [[ ! -f rpcdump.py ]]; then
+		echo "Downloading rpcdump.py"
+		wget --quiet https://raw.githubusercontent.com/SecureAuthCorp/impacket/master/examples/rpcdump.py
+		chmod 744 rpcdump.py
+        let EXC++
+	fi
+	if [[ $(python -c "import impacket" 2>/dev/null) -ne 0 ]]; then
+		echo "Installing impacket module"
+		pip2 install impacket
+        let EXC++
+	fi
+
+	[[ $EXC -eq 0 ]] || exit
+}
+
+
+function nightmarecheck() {
+	IP=$1
+	echo -ne "\r> Testing $IP"
+	res=$(timeout 2 python rpcdump.py @${IP} |grep 'MS-RPRN')
+	if [[ $res != '' ]]; then
+		echo -ne "\r[+] $IP is potentially vulnerable"
+		echo ""
+	fi
+}
+
+
+function help() {
+	echo -e "USAGE:"
+	echo -e "\t./PrintNightmareCheck [IP / Network]"
+	exit
+}
+
+
+
+
+
+TARGET=$1
+ensuredeps
+
+
+octal='(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[0-9]{1,2})'
+if [[ $TARGET =~ ^$octal\.$octal\.$octal\.$octal$ ]]; then
+	IPLIST=$TARGET
+elif [[ $TARGET =~ ^$octal\.$octal\.$octal\.$octal/(3[0-2]|[1-2][0-9]|[0-9])$ ]]; then
+	IPLIST=$(nmap -n -sL $TARGET |grep "Nmap scan" |awk '{print $5}' |sed '1d;$d;')
+else
+	help
+fi
+
+for ip in $IPLIST; do
+	nightmarecheck $ip
+done
+
+echo ""
