@@ -9,7 +9,7 @@ function ensuredeps() {
 		echo "apt install nmap"
 		let EXC++
 	fi
-	if [[ $(which python2.7) == '' || $(which python) == '' ]]; then
+	if [[ $(which python2.7) == '' ]]; then
 		echo "You need python2.7 to run this script"
 		echo "apt install python2.7"
 		let EXC++
@@ -26,7 +26,7 @@ function ensuredeps() {
 		chmod 744 rpcdump.py
 		let EXC++
 	fi
-	if [[ $(python -c "import impacket" 2>/dev/null) -ne 0 ]]; then
+	if [[ $(python2.7 -c "import impacket" 2>/dev/null) -ne 0 ]]; then
 		echo "Installing impacket module"
 		pip2 install impacket
 		let EXC++
@@ -37,9 +37,8 @@ function ensuredeps() {
 
 function nightmarecheck() {
 	IP=$1
-	pythonpkg=$2
 	echo -ne "\r> Testing $IP"
-	res=$(timeout 2 $pythonpkg rpcdump.py @${IP} |grep 'MS-RPRN')
+	res=$(timeout 2 python2.7 rpcdump.py @${IP} |grep 'MS-RPRN')
 	if [[ $res != '' ]]; then
 		echo -ne "\r[+] $IP is potentially vulnerable"
 		echo ""
@@ -57,15 +56,10 @@ function help() {
 TARGET=$1
 ensuredeps
 
-if [[ $(which python) != '' ]]; then
-	if [[ $(python --version |grep '2.7') != '' ]]; then
-		pythonpkg=python
-	elif [[ $(python2.7 --version |grep '2.7') != '' ]]; then
-		pythonpkg=python2.7
-	else
-		echo "There where problems with python2"
-		exit
-	fi
+if [[ $(which python2.7) != '' ]]; then
+	echo "There where problems with python2.7"
+	echo "If you have python2.7 installed, try to create an alias or link named \"python2.7\" instead of \"python\""
+	exit
 fi
 
 octal='(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[0-9]{1,2})'
