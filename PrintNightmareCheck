@@ -35,7 +35,6 @@ function ensuredeps() {
 	[[ $EXC -eq 0 ]] || exit
 }
 
-
 function nightmarecheck() {
 	IP=$1
 	echo -ne "\r> Testing $IP"
@@ -46,7 +45,6 @@ function nightmarecheck() {
 	fi
 }
 
-
 function help() {
 	echo -e "USAGE:"
 	echo -e "\t./PrintNightmareCheck [IP / Network]"
@@ -55,11 +53,8 @@ function help() {
 
 
 
-
-
 TARGET=$1
 ensuredeps
-
 
 octal='(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[0-9]{1,2})'
 if [[ $TARGET =~ ^$octal\.$octal\.$octal\.$octal$ ]]; then
