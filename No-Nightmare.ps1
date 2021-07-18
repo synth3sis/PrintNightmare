@@ -55,7 +55,7 @@ If (!$Enable -and !$Disable -and !$Status) {
 
 If ($Enable -and $Disable) {
 	Write-Host "$err_acl"
-	Break
+	return
 }
 
 If ($Enable) {
