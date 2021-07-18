@@ -2,7 +2,7 @@
 
 <br>
 
-This repo is inteded to help sysadmins to find and mitigate the vulnerability known as "Print Nightmare" (CVE-2021-34527).
+This repo is inteded to help sysadmins to find and mitigate the vulnerability known as "PrintNightmare" (CVE-2021-34527).
 
 <br>
 
