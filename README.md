@@ -2,21 +2,21 @@
 
 <br>
 
-This repo is inteded to help sysadmins to find and mitigate the vulnerability known as "Print Nightmare"
+This repo is inteded to help sysadmins to find and mitigate the vulnerability known as "Print Nightmare" (CVE-2021-34527).
 
 <br>
 
-## PrintNightmareCheck
+## Module: PrintNightmareCheck
 
-This bash module has the purose to check hosts vulnerable state to CVE-2021-34527.
-It has some dependencies. Just run it and the dependencies will be verified.
+Written in bash, it uses RPC server mapping to check if hosts are potentially vulnerable to CVE-2021-34527.
+It has some dependencies. Just run it and read the output, the dependencies will be preventively verified.
 
 <br>
 
-## No-Nightmare.ps1
+## Module: No-Nightmare.ps1
 
-This powershell module has the purpose to mitigate the CVE-2021-34527 vulnerability; it's not a patch but just a workaround.
+This powershell module has the purpose to mitigate the CVE-2021-34527 vulnerability on the Windows host; it's not a patch but just a workaround.
 
-One phase of the RCE exploit is the deployment of a DLL inside a spooler' subdirectory. This can be avoided by restricting
-write access to the main spooler directory with ACL.
+One of the phases of the RCE exploit is the deployment of a DLL inside a subdirectory of "C:\Windows\System32\spool\drivers".
+This can be avoided by restricting write access to the main directory using ACL.
 
