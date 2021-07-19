@@ -77,5 +77,6 @@ for ip in $IPLIST; do
 	nightmarecheck $ip $pythonpkg
 done
 
-echo "--------------------------------------------------------"
+echo -ne "\r--------------------------------------------------------"
+echo ""
 echo "[!] N. $vulnerable_hosts are potentially vulnerable to PrintNightmare"
