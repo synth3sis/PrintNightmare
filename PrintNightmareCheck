@@ -41,6 +41,7 @@ function nightmarecheck() {
 	res=$(timeout 2 python2.7 rpcdump.py @${IP} |grep 'MS-RPRN')
 	if [[ $res != '' ]]; then
 		echo -ne "\r[+] $IP is potentially vulnerable"
+		let vulnerable_hosts++
 		echo ""
 	fi
 }
@@ -55,6 +56,7 @@ function help() {
 
 TARGET=$1
 ensuredeps
+vulnerable_hosts=0
 
 if [[ $(which python2.7) == '' ]]; then
 	echo "There where problems with python2.7"
@@ -75,4 +77,5 @@ for ip in $IPLIST; do
 	nightmarecheck $ip $pythonpkg
 done
 
-echo ""
+echo "-----------------------------------------------------"
+echo "[!] $vulnerable_hosts are potentially vulnerable to PrintNightmare"
